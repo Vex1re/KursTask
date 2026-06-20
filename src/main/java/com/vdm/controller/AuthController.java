@@ -30,7 +30,9 @@ public class AuthController {
                 showAlert("Error", "Invalid credentials");
             }
         } catch (SQLException e) {
-            showAlert("Error", "Database error");
+            showAlert("Database Error", "Unable to connect to the database: " + e.getMessage());
+        } catch (Exception e) {
+            showAlert("Error", "An unexpected error occurred: " + e.getMessage());
         }
     }
 
