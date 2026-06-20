@@ -15,7 +15,7 @@ public class VoucherController {
     @FXML private TableView<Voucher> voucherTable;
     @FXML private TableColumn<Voucher, String> hotelColumn;
     @FXML private TableColumn<Voucher, Integer> durationColumn;
-    @FXML private TextField durationField;
+    @FXML private ComboBox<String> durationCombo;
     @FXML private ComboBox<Hotel> hotelCombo;
 
     private VoucherDAO voucherDAO = new VoucherDAO();
@@ -26,11 +26,18 @@ public class VoucherController {
         hotelColumn.setCellValueFactory(cellData -> new javafx.beans.property.SimpleStringProperty(cellData.getValue().getHotel().getName()));
         durationColumn.setCellValueFactory(new PropertyValueFactory<>("duration"));
         
+        durationCombo.setItems(FXCollections.observableArrayList("1 неделя", "2 недели", "4 недели"));
         try {
             hotelCombo.setItems(FXCollections.observableArrayList(hotelDAO.getAll()));
         } catch (SQLException e) { e.printStackTrace(); }
         
         refreshTable();
+    }
+
+    private int getWeeksFromCombo() {
+        String selected = durationCombo.getValue();
+        if (selected == null) return 0;
+        return (selected.contains("1")) ? 1 : (selected.contains("2")) ? 2 : 4;
     }
 
     private void refreshTable() {
@@ -42,25 +49,26 @@ public class VoucherController {
     @FXML
     public void handleAdd() {
         Hotel selectedHotel = hotelCombo.getValue();
-        if (selectedHotel == null) return;
+        int weeks = getWeeksFromCombo();
+        if (selectedHotel == null || weeks == 0) return;
         try {
-            int duration = Integer.parseInt(durationField.getText());
-            voucherDAO.add(new Voucher((int)(System.currentTimeMillis()%10000), duration, selectedHotel));
+            voucherDAO.add(new Voucher((int)(System.currentTimeMillis()%10000), weeks, selectedHotel));
             refreshTable();
-        } catch (SQLException | NumberFormatException e) { e.printStackTrace(); }
+        } catch (SQLException e) { e.printStackTrace(); }
     }
 
     @FXML
     public void handleUpdate() {
         Voucher selected = voucherTable.getSelectionModel().getSelectedItem();
         Hotel selectedHotel = hotelCombo.getValue();
-        if (selected == null || selectedHotel == null) return;
+        int weeks = getWeeksFromCombo();
+        if (selected == null || selectedHotel == null || weeks == 0) return;
         try {
-            selected.setDuration(Integer.parseInt(durationField.getText()));
+            selected.setDuration(weeks);
             selected.setHotel(selectedHotel);
             voucherDAO.update(selected);
             refreshTable();
-        } catch (SQLException | NumberFormatException e) { e.printStackTrace(); }
+        } catch (SQLException e) { e.printStackTrace(); }
     }
 
     @FXML

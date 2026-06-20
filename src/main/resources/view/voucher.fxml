@@ -11,7 +11,7 @@
             <TableColumn fx:id="durationColumn" text="Длительность" />
         </columns>
     </TableView>
-    <TextField fx:id="durationField" promptText="Длительность (1, 2, 4)" />
+    <ComboBox fx:id="durationCombo" promptText="Выберите длительность" />
     <ComboBox fx:id="hotelCombo" promptText="Выберите отель" />
     <HBox spacing="10">
         <Button text="Добавить" onAction="#handleAdd" />
