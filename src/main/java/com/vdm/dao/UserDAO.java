@@ -1,11 +1,13 @@
 package com.vdm.dao;
 
 import com.vdm.model.User;
+import com.vdm.model.Role;
 import com.vdm.util.DatabaseConnection;
 
 import java.sql.*;
 
 public class UserDAO {
+    private RoleDAO roleDAO = new RoleDAO();
 
     public User findByLogin(String login) throws SQLException {
         String query = "SELECT * FROM Users WHERE login = ?";
@@ -14,12 +16,13 @@ public class UserDAO {
             stmt.setString(1, login);
             ResultSet rs = stmt.executeQuery();
             if (rs.next()) {
+                Role role = roleDAO.getById(rs.getInt("id_role"));
                 return new User(
                     rs.getInt("id_user"),
                     rs.getString("name"),
                     rs.getString("login"),
                     rs.getString("password"),
-                    rs.getInt("id_role")
+                    role
                 );
             }
         }
@@ -34,7 +37,7 @@ public class UserDAO {
             stmt.setString(2, user.getName());
             stmt.setString(3, user.getLogin());
             stmt.setString(4, user.getPassword());
-            stmt.setInt(5, user.getRoleId());
+            stmt.setInt(5, user.getRole().getId());
             return stmt.executeUpdate() > 0;
         }
     }

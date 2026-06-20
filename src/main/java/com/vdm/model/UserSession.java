@@ -30,7 +30,7 @@ public class UserSession {
     }
 
     public boolean isPrivileged() {
-        return isLoggedIn() && currentUser.getRoleId() == 1;
+        return isLoggedIn() && currentUser.getRole().getId() == 1;
     }
 
     public boolean canManageClients() {
