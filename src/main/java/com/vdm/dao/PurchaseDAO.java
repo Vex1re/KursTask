@@ -1,14 +1,36 @@
 package com.vdm.dao;
 
-import com.vdm.model.Purchase;
+import com.vdm.model.*;
 import com.vdm.util.DatabaseConnection;
 import java.sql.*;
+import java.util.List;
 
 public class PurchaseDAO {
-    public void createPurchase(Purchase purchase, int[] voucherIds) throws SQLException {
+    public void createPurchase(Purchase purchase, List<Voucher> vouchers, boolean isFirstPurchase, boolean hasDiscount) throws SQLException {
         Connection conn = DatabaseConnection.getInstance().getConnection();
         conn.setAutoCommit(false);
         try {
+            String pQuery = "INSERT INTO Purchases (id_purchase, order_date, vouchers_count, total_cost, id_client) VALUES (?, ?, ?, ?, ?)";
+            try (PreparedStatement pStmt = conn.prepareStatement(pQuery)) {
+                pStmt.setInt(1, purchase.getId());
+                pStmt.setDate(2, purchase.getOrderDate());
+                pStmt.setInt(3, vouchers.size());
+                pStmt.setBigDecimal(4, purchase.getTotalCost());
+                pStmt.setInt(5, purchase.getClient().getId());
+                pStmt.executeUpdate();
+            }
+
+            String vQuery = "INSERT INTO Voucher_Purchase (id_tour, id_purchase, cost, departure_date) VALUES (?, ?, ?, ?)";
+            try (PreparedStatement vStmt = conn.prepareStatement(vQuery)) {
+                for (Voucher v : vouchers) {
+                    vStmt.setInt(1, v.getId());
+                    vStmt.setInt(2, purchase.getId());
+                    vStmt.setBigDecimal(3, java.math.BigDecimal.valueOf(1000)); 
+                    vStmt.setDate(4, purchase.getOrderDate());
+                    vStmt.executeUpdate();
+                }
+            }
+
             conn.commit();
         } catch (SQLException e) {
             conn.rollback();
