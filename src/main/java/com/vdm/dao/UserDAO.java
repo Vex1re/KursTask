@@ -7,16 +7,14 @@ import com.vdm.util.DatabaseConnection;
 import java.sql.*;
 
 public class UserDAO {
-    private RoleDAO roleDAO = new RoleDAO();
-
     public User findByLogin(String login) throws SQLException {
-        String query = "SELECT * FROM Users WHERE login = ?";
+        String query = "SELECT u.*, r.name as role_name FROM Users u JOIN Roles r ON u.id_role = r.id_role WHERE u.login = ?";
         Connection conn = DatabaseConnection.getInstance().getConnection();
         try (PreparedStatement stmt = conn.prepareStatement(query)) {
             stmt.setString(1, login);
             ResultSet rs = stmt.executeQuery();
             if (rs.next()) {
-                Role role = roleDAO.getById(rs.getInt("id_role"));
+                Role role = new Role(rs.getInt("id_role"), rs.getString("role_name"));
                 return new User(
                     rs.getInt("id_user"),
                     rs.getString("name"),

@@ -3,6 +3,7 @@ package com.vdm.controller;
 import com.vdm.dao.RoleDAO;
 import com.vdm.model.Role;
 import com.vdm.dao.UserDAO;
+import com.vdm.model.User;
 import com.vdm.model.UserSession;
 import com.vdm.util.PasswordValidator;
 import javafx.fxml.FXML;
