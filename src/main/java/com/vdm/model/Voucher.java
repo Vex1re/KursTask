@@ -17,4 +17,9 @@ public class Voucher {
     public void setDuration(int duration) { this.duration = duration; }
     public Hotel getHotel() { return hotel; }
     public void setHotel(Hotel hotel) { this.hotel = hotel; }
+
+    @Override
+    public String toString() {
+        return "Тур #" + id + " (Отель: " + hotel.getName() + ")";
+    }
 }
