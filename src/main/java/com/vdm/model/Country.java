@@ -17,4 +17,9 @@ public class Country {
     public void setName(String name) { this.name = name; }
     public String getClimate() { return climate; }
     public void setClimate(String climate) { this.climate = climate; }
+
+    @Override
+    public String toString() {
+        return name;
+    }
 }

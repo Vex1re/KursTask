@@ -21,4 +21,9 @@ public class Hotel {
     public void setHotelClass(String hotelClass) { this.hotelClass = hotelClass; }
     public int getCountryId() { return countryId; }
     public void setCountryId(int countryId) { this.countryId = countryId; }
+
+    @Override
+    public String toString() {
+        return name;
+    }
 }
