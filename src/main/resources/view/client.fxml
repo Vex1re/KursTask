@@ -2,15 +2,19 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<VBox xmlns:fx="http://javafx.com/fxml" fx:controller="com.vdm.controller.ClientController">
-    <TableView fx:id="clientTable">
+<VBox xmlns:fx="http://javafx.com/fxml" fx:controller="com.vdm.controller.ClientController" spacing="10" alignment="CENTER" prefWidth="500" prefHeight="400">
+    <TableView fx:id="clientTable" VBox.vgrow="ALWAYS">
         <columns>
-            <TableColumn fx:id="nameColumn" text="Name" />
-            <TableColumn fx:id="phoneColumn" text="Phone" />
+            <TableColumn fx:id="nameColumn" text="Name" prefWidth="150" />
+            <TableColumn fx:id="phoneColumn" text="Phone" prefWidth="150" />
+            <TableColumn fx:id="addressColumn" text="Address" prefWidth="200" />
         </columns>
     </TableView>
-    <HBox spacing="10">
+    <HBox spacing="10" alignment="CENTER" style="-fx-padding: 10;">
         <Button text="Back" onAction="#handleBack" />
+        <Button text="Add Client" onAction="#handleAdd" />
+        <Button text="Edit Client" onAction="#handleEdit" />
+        <Button text="Delete Client" onAction="#handleDelete" />
         <Button text="Create Purchase" onAction="#handleCreatePurchase" />
     </HBox>
 </VBox>

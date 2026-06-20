@@ -6,5 +6,6 @@
     <Label text="Main Menu" />
     <Button fx:id="editHotelsButton" text="Manage Hotels" onAction="#handleManageHotels" />
     <Button fx:id="editClientsButton" text="Manage Clients" onAction="#handleManageClients" />
+    <Button fx:id="createPurchaseButton" text="Create Purchase" onAction="#handleCreatePurchase" />
     <Button text="Logout" onAction="#handleLogout" />
 </VBox>
