@@ -10,7 +10,6 @@ import com.vdm.model.Purchase;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
-import java.math.BigDecimal;
 import java.sql.Date;
 import java.sql.SQLException;
 import javafx.event.ActionEvent;
@@ -32,6 +31,7 @@ public class PurchaseController {
     private Client client;
     private List<Voucher> currentVouchers = new ArrayList<>();
     private PurchaseDAO purchaseDAO = new PurchaseDAO();
+    private HotelDAO hotelDAO = new HotelDAO();
 
     public void setClient(Client client) {
         this.client = client;
@@ -44,6 +44,16 @@ public class PurchaseController {
         try {
             countryCombo.setItems(FXCollections.observableArrayList(new CountryDAO().getAll()));
         } catch (SQLException e) { e.printStackTrace(); }
+    }
+
+    @FXML
+    public void handleCountrySelect() {
+        Country selected = countryCombo.getValue();
+        if (selected != null) {
+            try {
+                hotelCombo.setItems(FXCollections.observableArrayList(hotelDAO.getAll().stream().filter(h -> h.getCountry().getId() == selected.getId()).toList()));
+            } catch (SQLException e) { e.printStackTrace(); }
+        }
     }
 
     @FXML
