@@ -1,7 +1,8 @@
 package com.vdm.controller;
 
+import com.vdm.dao.RoleDAO;
+import com.vdm.model.Role;
 import com.vdm.dao.UserDAO;
-import com.vdm.model.User;
 import com.vdm.model.UserSession;
 import com.vdm.util.PasswordValidator;
 import javafx.fxml.FXML;
@@ -55,14 +56,15 @@ public class AuthController {
         }
 
         try {
-            User newUser = new User((int)(System.currentTimeMillis() % 100000), name, login, password, roleId);
+            Role managerRole = new RoleDAO().getByRoleName("Менеджер");
+            User newUser = new User((int)(System.currentTimeMillis() % 100000), name, login, password, managerRole);
             if (userDAO.registerUser(newUser)) {
-                showAlert("Success", "Registered successfully.");
+                showAlert("Успех", "Регистрация прошла успешно.");
             } else {
-                showAlert("Error", "Registration failed.");
+                showAlert("Ошибка", "Регистрация не удалась.");
             }
         } catch (SQLException e) {
-            showAlert("Database Error", "Registration failed: " + e.getMessage());
+            showAlert("Ошибка базы данных", "Регистрация не удалась: " + e.getMessage());
         }
     }
 @FXML
