@@ -11,7 +11,10 @@ public class MainController {
     @FXML
     public void initialize() {
         if (!UserSession.getInstance().isPrivileged()) {
-            editHotelsButton.setDisable(true);
+            editHotelsButton.setDisable(true); 
+        }
+        
+        if (!UserSession.getInstance().canManageClients()) {
             editClientsButton.setDisable(true);
         }
     }
