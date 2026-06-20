@@ -3,9 +3,24 @@ package com.vdm.dao;
 import com.vdm.model.*;
 import com.vdm.util.DatabaseConnection;
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.List;
 
 public class PurchaseDAO {
+    public List<Purchase> getAllPurchases() throws SQLException {
+        List<Purchase> purchases = new ArrayList<>();
+        String query = "SELECT p.*, c.name as client_name, c.phone_number, c.address FROM Purchases p JOIN Clients c ON p.id_client = c.id_client";
+        try (Connection conn = DatabaseConnection.getInstance().getConnection();
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(query)) {
+            while (rs.next()) {
+                Client client = new Client(rs.getInt("id_client"), rs.getString("client_name"), rs.getString("phone_number"), rs.getString("address"));
+                purchases.add(new Purchase(rs.getInt("id_purchase"), rs.getDate("order_date"), client, rs.getInt("vouchers_count"), rs.getBigDecimal("total_cost")));
+            }
+        }
+        return purchases;
+    }
+
     public void createPurchase(Purchase purchase, List<VoucherPurchaseItem> vouchers, Discount discount) throws SQLException {
         Connection conn = DatabaseConnection.getInstance().getConnection();
         conn.setAutoCommit(false);

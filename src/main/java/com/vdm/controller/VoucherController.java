@@ -15,6 +15,8 @@ public class VoucherController {
     @FXML private TableView<Voucher> voucherTable;
     @FXML private TableColumn<Voucher, String> hotelColumn;
     @FXML private TableColumn<Voucher, Integer> durationColumn;
+    @FXML private TableColumn<Voucher, BigDecimal> priceColumn;
+    @FXML private TextField priceField;
     @FXML private ComboBox<String> durationCombo;
     @FXML private ComboBox<Hotel> hotelCombo;
 
@@ -25,36 +27,20 @@ public class VoucherController {
     public void initialize() {
         hotelColumn.setCellValueFactory(cellData -> new javafx.beans.property.SimpleStringProperty(cellData.getValue().getHotel().getName()));
         durationColumn.setCellValueFactory(new PropertyValueFactory<>("duration"));
+        priceColumn.setCellValueFactory(new PropertyValueFactory<>("basePrice"));
         
         durationCombo.setItems(FXCollections.observableArrayList("1 неделя", "2 недели", "4 недели"));
-        try {
-            hotelCombo.setItems(FXCollections.observableArrayList(hotelDAO.getAll()));
-        } catch (SQLException e) { e.printStackTrace(); }
-        
-        refreshTable();
-    }
-
-    private int getWeeksFromCombo() {
-        String selected = durationCombo.getValue();
-        if (selected == null) return 0;
-        return (selected.contains("1")) ? 1 : (selected.contains("2")) ? 2 : 4;
-    }
-
-    private void refreshTable() {
-        try {
-            voucherTable.setItems(FXCollections.observableArrayList(voucherDAO.getAll()));
-        } catch (SQLException e) { e.printStackTrace(); }
     }
 
     @FXML
     public void handleAdd() {
         Hotel selectedHotel = hotelCombo.getValue();
         int weeks = getWeeksFromCombo();
-        if (selectedHotel == null || weeks == 0) return;
         try {
-            voucherDAO.add(new Voucher((int)(System.currentTimeMillis()%10000), weeks, selectedHotel));
+            BigDecimal price = new BigDecimal(priceField.getText());
+            voucherDAO.add(new Voucher((int)(System.currentTimeMillis()%10000), weeks, selectedHotel, price));
             refreshTable();
-        } catch (SQLException e) { e.printStackTrace(); }
+        } catch (SQLException | NumberFormatException e) { e.printStackTrace(); }
     }
 
     @FXML

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<VBox xmlns:fx="http://javafx.com/fxml" fx:controller="com.vdm.controller.PurchaseHistoryController" spacing="10">
+    <padding><Insets bottom="10" left="10" right="10" top="10"/></padding>
+    <TableView fx:id="purchaseTable" prefHeight="400">
+        <columns>
+            <TableColumn fx:id="idColumn" text="ID" />
+            <TableColumn fx:id="dateColumn" text="Дата" />
+            <TableColumn fx:id="costColumn" text="Стоимость" />
+            <TableColumn fx:id="clientColumn" text="Клиент" />
+        </columns>
+    </TableView>
+    <Button text="Назад" onAction="#handleBack" />
+</VBox>

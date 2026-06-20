@@ -83,12 +83,37 @@ public class PurchaseController {
         totalCostLabel.setText("Итого: " + total.setScale(2, BigDecimal.ROUND_HALF_UP));
     }
 
+    @FXML private DatePicker orderDatePicker;
+
+    private BigDecimal calculateDynamicPrice(VoucherPurchaseItem item, Date orderDate) {
+        long diffInMillies = Math.abs(item.getDepartureDate().getTime() - orderDate.getTime());
+        long diffInDays = java.util.concurrent.TimeUnit.DAYS.convert(diffInMillies, java.util.concurrent.TimeUnit.MILLISECONDS);
+        
+        BigDecimal price = item.getPrice();
+        if (diffInDays < 30) {
+            long daysLess = 30 - diffInDays;
+            BigDecimal multiplier = new BigDecimal("1").add(new BigDecimal(daysLess).multiply(new BigDecimal("0.05")));
+            price = price.multiply(multiplier);
+        }
+        return price;
+    }
+
     @FXML
     public void handleCreatePurchase(ActionEvent event) {
         if (client == null) return;
         try {
-            BigDecimal total = new BigDecimal(totalCostLabel.getText().replace("Итого: ", ""));
-            Purchase p = new Purchase((int)(System.currentTimeMillis()%100000), new Date(System.currentTimeMillis()), client, currentVouchers.size(), total);
+            Date orderDate = Date.valueOf(orderDatePicker.getValue());
+            BigDecimal total = BigDecimal.ZERO;
+            
+            for (VoucherPurchaseItem item : currentVouchers) {
+                total = total.add(calculateDynamicPrice(item, orderDate));
+            }
+            
+            Discount d = discountCombo.getValue();
+            BigDecimal discountSize = (d != null && d.getId() != 0) ? d.getSize().divide(new BigDecimal(100)) : BigDecimal.ZERO;
+            total = total.multiply(BigDecimal.ONE.subtract(discountSize));
+            
+            Purchase p = new Purchase((int)(System.currentTimeMillis()%100000), orderDate, client, currentVouchers.size(), total.setScale(2, BigDecimal.ROUND_HALF_UP));
             purchaseDAO.createPurchase(p, currentVouchers, discountCombo.getValue());
             com.vdm.util.ViewUtils.loadView("/view/main-view.fxml", event);
         } catch (Exception e) { e.printStackTrace(); }
