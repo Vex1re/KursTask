@@ -4,8 +4,7 @@ import com.vdm.dao.CountryDAO;
 import com.vdm.model.Country;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 
 import java.sql.SQLException;
@@ -14,6 +13,8 @@ public class CountryController {
     @FXML private TableView<Country> countryTable;
     @FXML private TableColumn<Country, String> nameColumn;
     @FXML private TableColumn<Country, String> climateColumn;
+    @FXML private TextField nameField;
+    @FXML private TextField climateField;
 
     private CountryDAO countryDAO = new CountryDAO();
 
@@ -21,10 +22,46 @@ public class CountryController {
     public void initialize() {
         nameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
         climateColumn.setCellValueFactory(new PropertyValueFactory<>("climate"));
+        refreshTable();
+    }
+
+    private void refreshTable() {
         try {
             countryTable.setItems(FXCollections.observableArrayList(countryDAO.getAll()));
         } catch (SQLException e) {
             e.printStackTrace();
+        }
+    }
+
+    @FXML
+    public void handleAdd() {
+        try {
+            countryDAO.add(new Country((int)(System.currentTimeMillis()%10000), nameField.getText(), climateField.getText()));
+            refreshTable();
+        } catch (SQLException e) { e.printStackTrace(); }
+    }
+
+    @FXML
+    public void handleUpdate() {
+        Country selected = countryTable.getSelectionModel().getSelectedItem();
+        if (selected != null) {
+            try {
+                selected.setName(nameField.getText());
+                selected.setClimate(climateField.getText());
+                countryDAO.update(selected);
+                refreshTable();
+            } catch (SQLException e) { e.printStackTrace(); }
+        }
+    }
+
+    @FXML
+    public void handleDelete() {
+        Country selected = countryTable.getSelectionModel().getSelectedItem();
+        if (selected != null) {
+            try {
+                countryDAO.delete(selected.getId());
+                refreshTable();
+            } catch (SQLException e) { e.printStackTrace(); }
         }
     }
 }
