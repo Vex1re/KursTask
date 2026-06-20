@@ -2,6 +2,15 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<VBox xmlns:fx="http://javafx.com/fxml" fx:controller="com.vdm.controller.PurchaseController">
-    <Button text="Create Purchase" onAction="#handleCreatePurchase" />
+<VBox xmlns:fx="http://javafx.com/fxml" fx:controller="com.vdm.controller.PurchaseController" spacing="10" alignment="CENTER" prefWidth="300" prefHeight="400">
+    <Label fx:id="clientLabel" />
+    <ComboBox fx:id="countryCombo" promptText="Select Country" onAction="#handleCountrySelect" />
+    <ComboBox fx:id="hotelCombo" promptText="Select Hotel" />
+    <ComboBox fx:id="durationCombo" promptText="Duration" />
+    <DatePicker fx:id="datePicker" promptText="Departure Date" />
+    <CheckBox fx:id="discountCheck" text="Discount (5%)" />
+    <HBox spacing="10" alignment="CENTER">
+        <Button text="Back" onAction="#handleBack" />
+        <Button text="Confirm Purchase" onAction="#handleCreatePurchase" />
+    </HBox>
 </VBox>

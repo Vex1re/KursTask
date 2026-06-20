@@ -9,4 +9,8 @@
             <TableColumn fx:id="phoneColumn" text="Phone" />
         </columns>
     </TableView>
+    <HBox spacing="10">
+        <Button text="Back" onAction="#handleBack" />
+        <Button text="Create Purchase" onAction="#handleCreatePurchase" />
+    </HBox>
 </VBox>

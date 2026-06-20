@@ -27,7 +27,10 @@ public class DatabaseConnection {
         return instance;
     }
 
-    public Connection getConnection() {
+    public Connection getConnection() throws SQLException {
+        if (connection == null || connection.isClosed()) {
+            connection = DriverManager.getConnection(url, user, password);
+        }
         return connection;
     }
 }

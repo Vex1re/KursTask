@@ -4,6 +4,7 @@ import com.vdm.dao.ClientDAO;
 import com.vdm.model.Client;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -17,13 +18,19 @@ public class ClientController {
     private ClientDAO clientDAO = new ClientDAO();
 
     @FXML
-    public void initialize() {
-        nameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
-        phoneColumn.setCellValueFactory(new PropertyValueFactory<>("phoneNumber"));
-        try {
-            clientTable.setItems(FXCollections.observableArrayList(clientDAO.getAll()));
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+    public void handleBack(javafx.event.ActionEvent event) throws Exception {
+        com.vdm.util.ViewUtils.loadView("/view/main-view.fxml", event);
     }
-}
+
+    @FXML
+    public void handleCreatePurchase(javafx.event.ActionEvent event) throws Exception {
+        Client selectedClient = clientTable.getSelectionModel().getSelectedItem();
+        if (selectedClient == null) {
+            return;
+        }
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/purchase.fxml"));
+        com.vdm.util.ViewUtils.loadView("/view/purchase.fxml", event);
+        PurchaseController controller = loader.getController();
+        controller.setClient(selectedClient);
+    }
+
