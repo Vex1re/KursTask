@@ -6,7 +6,7 @@ import java.sql.*;
 import java.util.List;
 
 public class PurchaseDAO {
-    public void createPurchase(Purchase purchase, List<Voucher> vouchers, Discount discount) throws SQLException {
+    public void createPurchase(Purchase purchase, List<VoucherPurchaseItem> vouchers, Discount discount) throws SQLException {
         Connection conn = DatabaseConnection.getInstance().getConnection();
         conn.setAutoCommit(false);
         try {
@@ -22,16 +22,16 @@ public class PurchaseDAO {
 
             String vQuery = "INSERT INTO Voucher_Purchase (id_tour, id_purchase, cost, departure_date) VALUES (?, ?, ?, ?)";
             try (PreparedStatement vStmt = conn.prepareStatement(vQuery)) {
-                for (Voucher v : vouchers) {
-                    vStmt.setInt(1, v.getId());
+                for (VoucherPurchaseItem item : vouchers) {
+                    vStmt.setInt(1, item.getVoucher().getId());
                     vStmt.setInt(2, purchase.getId());
-                    vStmt.setBigDecimal(3, java.math.BigDecimal.valueOf(1000)); 
-                    vStmt.setDate(4, purchase.getOrderDate());
+                    vStmt.setBigDecimal(3, item.getPrice());
+                    vStmt.setDate(4, item.getDepartureDate());
                     vStmt.executeUpdate();
                 }
             }
             
-            if (discount != null) {
+            if (discount != null && discount.getId() != 0) {
                 String dQuery = "INSERT INTO Purchase_Discount (id_sale, id_purchase) VALUES (?, ?)";
                 try (PreparedStatement dStmt = conn.prepareStatement(dQuery)) {
                     dStmt.setInt(1, discount.getId());

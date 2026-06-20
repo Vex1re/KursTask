@@ -18,13 +18,14 @@ public class PurchaseController {
     @FXML private Label clientLabel;
     @FXML private ComboBox<Voucher> voucherPoolCombo;
     @FXML private TextArea voucherInfoArea;
-    @FXML private DatePicker datePicker;
+    @FXML private TextField priceField;
+    @FXML private DatePicker departureDatePicker;
     @FXML private ComboBox<Discount> discountCombo;
-    @FXML private ListView<Voucher> voucherList;
+    @FXML private ListView<VoucherPurchaseItem> voucherList;
     @FXML private Label totalCostLabel;
 
     private Client client;
-    private List<Voucher> currentVouchers = new ArrayList<>();
+    private List<VoucherPurchaseItem> currentVouchers = new ArrayList<>();
     private PurchaseDAO purchaseDAO = new PurchaseDAO();
     private VoucherDAO voucherDAO = new VoucherDAO();
     private DiscountDAO discountDAO = new DiscountDAO();
@@ -38,7 +39,12 @@ public class PurchaseController {
     public void initialize() {
         try {
             voucherPoolCombo.setItems(FXCollections.observableArrayList(voucherDAO.getAll()));
-            discountCombo.setItems(FXCollections.observableArrayList(discountDAO.getAll()));
+            List<Discount> discounts = new ArrayList<>();
+            discounts.add(new Discount(0, "Без скидки", BigDecimal.ZERO));
+            discounts.addAll(discountDAO.getAll());
+            discountCombo.setItems(FXCollections.observableArrayList(discounts));
+            discountCombo.getSelectionModel().selectFirst();
+            discountCombo.setOnAction(e -> calculateTotal());
         } catch (SQLException e) { e.printStackTrace(); }
     }
 
@@ -56,29 +62,33 @@ public class PurchaseController {
     @FXML
     public void handleAddVoucher() {
         Voucher v = voucherPoolCombo.getValue();
-        if (v == null) return;
-        currentVouchers.add(v);
-        voucherList.getItems().add(v);
-        calculateTotal();
+        try {
+            BigDecimal price = new BigDecimal(priceField.getText());
+            Date depDate = Date.valueOf(departureDatePicker.getValue());
+            VoucherPurchaseItem item = new VoucherPurchaseItem(v, price, depDate);
+            currentVouchers.add(item);
+            voucherList.getItems().add(item);
+            calculateTotal();
+        } catch (Exception e) {  }
     }
 
     private void calculateTotal() {
-        double base = currentVouchers.size() * 1000.0; 
+        BigDecimal total = BigDecimal.ZERO;
+        for (VoucherPurchaseItem item : currentVouchers) {
+            total = total.add(item.getPrice());
+        }
         Discount d = discountCombo.getValue();
-        double discountSize = (d != null) ? d.getSize().doubleValue() / 100.0 : 0;
-        double total = base * (1 - discountSize);
-        totalCostLabel.setText("Итого: " + total);
+        BigDecimal discountSize = (d != null) ? d.getSize().divide(new BigDecimal(100)) : BigDecimal.ZERO;
+        total = total.multiply(BigDecimal.ONE.subtract(discountSize));
+        totalCostLabel.setText("Итого: " + total.setScale(2, BigDecimal.ROUND_HALF_UP));
     }
 
     @FXML
     public void handleCreatePurchase(ActionEvent event) {
-        if (client == null) {
-            System.err.println("Client is null!");
-            return;
-        }
+        if (client == null) return;
         try {
-            double total = Double.parseDouble(totalCostLabel.getText().replace("Итого: ", ""));
-            Purchase p = new Purchase((int)(System.currentTimeMillis()%100000), Date.valueOf(datePicker.getValue()), client, currentVouchers.size(), BigDecimal.valueOf(total));
+            BigDecimal total = new BigDecimal(totalCostLabel.getText().replace("Итого: ", ""));
+            Purchase p = new Purchase((int)(System.currentTimeMillis()%100000), new Date(System.currentTimeMillis()), client, currentVouchers.size(), total);
             purchaseDAO.createPurchase(p, currentVouchers, discountCombo.getValue());
             com.vdm.util.ViewUtils.loadView("/view/main-view.fxml", event);
         } catch (Exception e) { e.printStackTrace(); }

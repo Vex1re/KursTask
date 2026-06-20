@@ -5,8 +5,9 @@
 <VBox xmlns:fx="http://javafx.com/fxml" fx:controller="com.vdm.controller.PurchaseController" spacing="10" alignment="CENTER" prefWidth="400" prefHeight="500">
     <Label fx:id="clientLabel" />
     <ComboBox fx:id="voucherPoolCombo" promptText="Выберите путевку" onAction="#handleVoucherSelect" />
-    <TextArea fx:id="voucherInfoArea" editable="false" prefHeight="100" />
-    <DatePicker fx:id="datePicker" promptText="Дата отправления" />
+    <TextArea fx:id="voucherInfoArea" editable="false" prefHeight="80" />
+    <TextField fx:id="priceField" promptText="Цена путевки" />
+    <DatePicker fx:id="departureDatePicker" promptText="Дата отправления" />
     <ComboBox fx:id="discountCombo" promptText="Выберите скидку" />
     <Button text="Добавить путевку" onAction="#handleAddVoucher" />
     <ListView fx:id="voucherList" prefHeight="100" />
