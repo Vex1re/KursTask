@@ -13,7 +13,7 @@
         </columns>
     </TableView>
     <TextField fx:id="nameField" promptText="Название отеля" />
-    <TextField fx:id="classField" promptText="Класс" />
+    <ComboBox fx:id="classCombo" promptText="Выберите класс" />
     <ComboBox fx:id="countryCombo" promptText="Выберите страну" />
     <HBox spacing="10">
         <Button text="Добавить" onAction="#handleAdd" />

@@ -17,7 +17,7 @@ public class HotelController {
     @FXML private TableColumn<Hotel, String> classColumn;
     @FXML private TableColumn<Hotel, String> countryColumn;
     @FXML private TextField nameField;
-    @FXML private TextField classField;
+    @FXML private ComboBox<String> classCombo;
     @FXML private ComboBox<Country> countryCombo;
 
     private HotelDAO hotelDAO = new HotelDAO();
@@ -29,6 +29,7 @@ public class HotelController {
         classColumn.setCellValueFactory(new PropertyValueFactory<>("hotelClass"));
         countryColumn.setCellValueFactory(cellData -> new javafx.beans.property.SimpleStringProperty(cellData.getValue().getCountry().getName()));
         
+        classCombo.setItems(FXCollections.observableArrayList("Эконом", "Стандарт", "Бизнес", "Люкс", "Премиум"));
         try {
             countryCombo.setItems(FXCollections.observableArrayList(countryDAO.getAll()));
         } catch (SQLException e) { e.printStackTrace(); }
@@ -45,9 +46,10 @@ public class HotelController {
     @FXML
     public void handleAdd() {
         Country selectedCountry = countryCombo.getValue();
-        if (selectedCountry == null) return;
+        String hotelClass = classCombo.getValue();
+        if (selectedCountry == null || hotelClass == null) return;
         try {
-            hotelDAO.add(new Hotel((int)(System.currentTimeMillis()%10000), nameField.getText(), classField.getText(), selectedCountry));
+            hotelDAO.add(new Hotel((int)(System.currentTimeMillis()%10000), nameField.getText(), hotelClass, selectedCountry));
             refreshTable();
         } catch (SQLException e) { e.printStackTrace(); }
     }
@@ -56,10 +58,11 @@ public class HotelController {
     public void handleUpdate() {
         Hotel selected = hotelTable.getSelectionModel().getSelectedItem();
         Country selectedCountry = countryCombo.getValue();
-        if (selected == null || selectedCountry == null) return;
+        String hotelClass = classCombo.getValue();
+        if (selected == null || selectedCountry == null || hotelClass == null) return;
         try {
             selected.setName(nameField.getText());
-            selected.setHotelClass(classField.getText());
+            selected.setHotelClass(hotelClass);
             selected.setCountry(selectedCountry);
             hotelDAO.update(selected);
             refreshTable();
