@@ -65,31 +65,30 @@ public class AuthController {
             showAlert("Database Error", "Registration failed: " + e.getMessage());
         }
     }
+@FXML
+public void handleLogin(javafx.event.ActionEvent event) {
+    String login = loginField.getText();
+    String password = passwordField.getText();
 
-    @FXML
-    public void handleLogin() {
-        String login = loginField.getText();
-        String password = passwordField.getText();
-
-        if (login == null || login.isEmpty() || password == null || password.isEmpty()) {
-            showAlert("Error", "Login and password are required.");
-            return;
-        }
-
-        try {
-            User user = userDAO.findByLogin(login);
-            if (user != null && user.getPassword().equals(password)) {
-                UserSession.getInstance().setUser(user);
-                showAlert("Success", "Logged in successfully.");
-            } else {
-                showAlert("Error", "Invalid credentials");
-            }
-        } catch (SQLException e) {
-            showAlert("Database Error", "Unable to connect to the database: " + e.getMessage());
-        } catch (Exception e) {
-            showAlert("Error", "An unexpected error occurred: " + e.getMessage());
-        }
+    if (login == null || login.isEmpty() || password == null || password.isEmpty()) {
+        showAlert("Error", "Login and password are required.");
+        return;
     }
+
+    try {
+        User user = userDAO.findByLogin(login);
+        if (user != null && user.getPassword().equals(password)) {
+            UserSession.getInstance().setUser(user);
+            loadView("/view/main-view.fxml", event);
+        } else {
+            showAlert("Error", "Invalid credentials");
+        }
+    } catch (SQLException e) {
+        showAlert("Database Error", "Unable to connect to the database: " + e.getMessage());
+    } catch (Exception e) {
+        showAlert("Error", "An unexpected error occurred: " + e.getMessage());
+    }
+}
 
     private void showAlert(String title, String content) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
