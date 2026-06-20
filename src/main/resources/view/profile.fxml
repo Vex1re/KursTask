@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox xmlns:fx="http://javafx.com/fxml" fx:controller="com.vdm.controller.ProfileController" spacing="10" alignment="CENTER" prefWidth="300" prefHeight="250">
+    <TextField fx:id="nameField" promptText="Full Name" />
+    <TextField fx:id="loginField" promptText="Login" editable="false" />
+    <PasswordField fx:id="passwordField" promptText="New Password" />
+    <Button text="Update Profile" onAction="#handleUpdate" />
+</VBox>
