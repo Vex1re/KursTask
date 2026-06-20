@@ -61,7 +61,13 @@ public class CountryController {
             try {
                 countryDAO.delete(selected.getId());
                 refreshTable();
-            } catch (SQLException e) { e.printStackTrace(); }
+            } catch (SQLException e) {
+                if (e.getErrorCode() == 1451 || e.getMessage().contains("foreign key constraint")) {
+                    com.vdm.util.ViewUtils.showAlert("Ошибка", "Невозможно удалить страну, так как она используется в отелях.");
+                } else {
+                    e.printStackTrace();
+                }
+            }
         }
     }
 

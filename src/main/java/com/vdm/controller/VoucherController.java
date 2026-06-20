@@ -70,7 +70,13 @@ public class VoucherController {
             try {
                 voucherDAO.delete(selected.getId());
                 refreshTable();
-            } catch (SQLException e) { e.printStackTrace(); }
+            } catch (SQLException e) {
+                if (e.getErrorCode() == 1451 || e.getMessage().contains("foreign key constraint")) {
+                    com.vdm.util.ViewUtils.showAlert("Ошибка", "Невозможно удалить путевку, так как она используется в покупках.");
+                } else {
+                    e.printStackTrace();
+                }
+            }
         }
     }
 

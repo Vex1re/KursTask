@@ -73,7 +73,13 @@ public class HotelController {
             try {
                 hotelDAO.delete(selected.getId());
                 refreshTable();
-            } catch (SQLException e) { e.printStackTrace(); }
+            } catch (SQLException e) {
+                if (e.getErrorCode() == 1451 || e.getMessage().contains("foreign key constraint")) {
+                    com.vdm.util.ViewUtils.showAlert("Ошибка", "Невозможно удалить отель, так как он используется в путевках.");
+                } else {
+                    e.printStackTrace();
+                }
+            }
         }
     }
 
