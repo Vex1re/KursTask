@@ -4,13 +4,13 @@ public class Hotel {
     private int id;
     private String name;
     private String hotelClass;
-    private int countryId;
+    private Country country;
 
-    public Hotel(int id, String name, String hotelClass, int countryId) {
+    public Hotel(int id, String name, String hotelClass, Country country) {
         this.id = id;
         this.name = name;
         this.hotelClass = hotelClass;
-        this.countryId = countryId;
+        this.country = country;
     }
 
     public int getId() { return id; }
@@ -19,8 +19,8 @@ public class Hotel {
     public void setName(String name) { this.name = name; }
     public String getHotelClass() { return hotelClass; }
     public void setHotelClass(String hotelClass) { this.hotelClass = hotelClass; }
-    public int getCountryId() { return countryId; }
-    public void setCountryId(int countryId) { this.countryId = countryId; }
+    public Country getCountry() { return country; }
+    public void setCountry(Country country) { this.country = country; }
 
     @Override
     public String toString() {

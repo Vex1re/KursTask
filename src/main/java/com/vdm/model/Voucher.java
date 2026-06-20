@@ -3,18 +3,18 @@ package com.vdm.model;
 public class Voucher {
     private int id;
     private int duration;
-    private int hotelId;
+    private Hotel hotel;
 
-    public Voucher(int id, int duration, int hotelId) {
+    public Voucher(int id, int duration, Hotel hotel) {
         this.id = id;
         this.duration = duration;
-        this.hotelId = hotelId;
+        this.hotel = hotel;
     }
 
     public int getId() { return id; }
     public void setId(int id) { this.id = id; }
     public int getDuration() { return duration; }
     public void setDuration(int duration) { this.duration = duration; }
-    public int getHotelId() { return hotelId; }
-    public void setHotelId(int hotelId) { this.hotelId = hotelId; }
+    public Hotel getHotel() { return hotel; }
+    public void setHotel(Hotel hotel) { this.hotel = hotel; }
 }
