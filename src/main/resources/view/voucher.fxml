@@ -9,10 +9,8 @@
         <columns>
             <TableColumn fx:id="hotelColumn" text="Отель" />
             <TableColumn fx:id="durationColumn" text="Длительность" />
-            <TableColumn fx:id="priceColumn" text="Цена" />
         </columns>
     </TableView>
-    <TextField fx:id="priceField" promptText="Базовая цена" />
     <ComboBox fx:id="durationCombo" promptText="Выберите длительность" />
     <ComboBox fx:id="hotelCombo" promptText="Выберите отель" />
     <HBox spacing="10">

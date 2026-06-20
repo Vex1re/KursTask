@@ -9,15 +9,12 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 
-import java.math.BigDecimal;
 import java.sql.SQLException;
 
 public class VoucherController {
     @FXML private TableView<Voucher> voucherTable;
     @FXML private TableColumn<Voucher, String> hotelColumn;
     @FXML private TableColumn<Voucher, Integer> durationColumn;
-    @FXML private TableColumn<Voucher, BigDecimal> priceColumn;
-    @FXML private TextField priceField;
     @FXML private ComboBox<String> durationCombo;
     @FXML private ComboBox<Hotel> hotelCombo;
 
@@ -28,7 +25,6 @@ public class VoucherController {
     public void initialize() {
         hotelColumn.setCellValueFactory(cellData -> new javafx.beans.property.SimpleStringProperty(cellData.getValue().getHotel().getName()));
         durationColumn.setCellValueFactory(new PropertyValueFactory<>("duration"));
-        priceColumn.setCellValueFactory(new PropertyValueFactory<>("basePrice"));
         
         durationCombo.setItems(FXCollections.observableArrayList("1 неделя", "2 недели", "4 недели"));
         try {
@@ -54,11 +50,11 @@ public class VoucherController {
     public void handleAdd() {
         Hotel selectedHotel = hotelCombo.getValue();
         int weeks = getWeeksFromCombo();
+        if (selectedHotel == null || weeks == 0) return;
         try {
-            BigDecimal price = new BigDecimal(priceField.getText());
-            voucherDAO.add(new Voucher((int)(System.currentTimeMillis()%10000), weeks, selectedHotel, price));
+            voucherDAO.add(new Voucher((int)(System.currentTimeMillis()%10000), weeks, selectedHotel));
             refreshTable();
-        } catch (SQLException | NumberFormatException e) { e.printStackTrace(); }
+        } catch (SQLException e) { e.printStackTrace(); }
     }
 
     @FXML
@@ -70,10 +66,9 @@ public class VoucherController {
         try {
             selected.setDuration(weeks);
             selected.setHotel(selectedHotel);
-            selected.setBasePrice(new BigDecimal(priceField.getText()));
             voucherDAO.update(selected);
             refreshTable();
-        } catch (SQLException | NumberFormatException e) { e.printStackTrace(); }
+        } catch (SQLException e) { e.printStackTrace(); }
     }
 
     @FXML
