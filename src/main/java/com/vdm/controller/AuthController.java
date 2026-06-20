@@ -17,6 +17,35 @@ public class AuthController {
 
     private UserDAO userDAO = new UserDAO();
 
+
+    @FXML
+    public void handleRegister() {
+        String login = loginField.getText();
+        String password = passwordField.getText();
+        String name = nameField.getText();
+
+        if (name.isEmpty() || login.isEmpty()) {
+            showAlert("Error", "Name and Login are required.");
+            return;
+        }
+
+        if (!PasswordValidator.isValid(password)) {
+            showAlert("Error", "Password does not meet requirements.");
+            return;
+        }
+
+        try {
+            User newUser = new User((int)(System.currentTimeMillis() % 100000), name, login, password, roleId);
+            if (userDAO.registerUser(newUser)) {
+                showAlert("Success", "Registered successfully.");
+            } else {
+                showAlert("Error", "Registration failed.");
+            }
+        } catch (SQLException e) {
+            showAlert("Database Error", "Registration failed: " + e.getMessage());
+        }
+    }
+
     @FXML
     public void handleLogin() {
         String login = loginField.getText();
