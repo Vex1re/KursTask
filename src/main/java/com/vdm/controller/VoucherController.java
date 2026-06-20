@@ -9,6 +9,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 
+import java.math.BigDecimal;
 import java.sql.SQLException;
 
 public class VoucherController {
@@ -30,6 +31,23 @@ public class VoucherController {
         priceColumn.setCellValueFactory(new PropertyValueFactory<>("basePrice"));
         
         durationCombo.setItems(FXCollections.observableArrayList("1 неделя", "2 недели", "4 недели"));
+        try {
+            hotelCombo.setItems(FXCollections.observableArrayList(hotelDAO.getAll()));
+        } catch (SQLException e) { e.printStackTrace(); }
+        
+        refreshTable();
+    }
+
+    private int getWeeksFromCombo() {
+        String selected = durationCombo.getValue();
+        if (selected == null) return 0;
+        return (selected.contains("1")) ? 1 : (selected.contains("2")) ? 2 : 4;
+    }
+
+    private void refreshTable() {
+        try {
+            voucherTable.setItems(FXCollections.observableArrayList(voucherDAO.getAll()));
+        } catch (SQLException e) { e.printStackTrace(); }
     }
 
     @FXML
@@ -52,9 +70,10 @@ public class VoucherController {
         try {
             selected.setDuration(weeks);
             selected.setHotel(selectedHotel);
+            selected.setBasePrice(new BigDecimal(priceField.getText()));
             voucherDAO.update(selected);
             refreshTable();
-        } catch (SQLException e) { e.printStackTrace(); }
+        } catch (SQLException | NumberFormatException e) { e.printStackTrace(); }
     }
 
     @FXML

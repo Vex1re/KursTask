@@ -6,7 +6,6 @@
     <Label fx:id="clientLabel" />
     <ComboBox fx:id="voucherPoolCombo" promptText="Выберите путевку" onAction="#handleVoucherSelect" />
     <TextArea fx:id="voucherInfoArea" editable="false" prefHeight="80" />
-    <TextField fx:id="priceField" promptText="Цена путевки" />
     <DatePicker fx:id="departureDatePicker" promptText="Дата отправления" />
     <DatePicker fx:id="orderDatePicker" promptText="Дата оформления" />
     <ComboBox fx:id="discountCombo" promptText="Выберите скидку" />

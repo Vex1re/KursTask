@@ -4,6 +4,7 @@ import com.vdm.dao.DiscountDAO;
 import com.vdm.dao.PurchaseDAO;
 import com.vdm.dao.VoucherDAO;
 import com.vdm.model.*;
+import com.vdm.util.PriceCalculator;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -18,8 +19,8 @@ public class PurchaseController {
     @FXML private Label clientLabel;
     @FXML private ComboBox<Voucher> voucherPoolCombo;
     @FXML private TextArea voucherInfoArea;
-    @FXML private TextField priceField;
     @FXML private DatePicker departureDatePicker;
+    @FXML private DatePicker orderDatePicker;
     @FXML private ComboBox<Discount> discountCombo;
     @FXML private ListView<VoucherPurchaseItem> voucherList;
     @FXML private Label totalCostLabel;
@@ -62,14 +63,16 @@ public class PurchaseController {
     @FXML
     public void handleAddVoucher() {
         Voucher v = voucherPoolCombo.getValue();
-        try {
-            BigDecimal price = new BigDecimal(priceField.getText());
-            Date depDate = Date.valueOf(departureDatePicker.getValue());
-            VoucherPurchaseItem item = new VoucherPurchaseItem(v, price, depDate);
-            currentVouchers.add(item);
-            voucherList.getItems().add(item);
-            calculateTotal();
-        } catch (Exception e) {  }
+        Date orderDate = (orderDatePicker.getValue() != null) ? Date.valueOf(orderDatePicker.getValue()) : new Date(System.currentTimeMillis());
+        Date depDate = (departureDatePicker.getValue() != null) ? Date.valueOf(departureDatePicker.getValue()) : null;
+        
+        if (v == null || depDate == null) return;
+        
+        BigDecimal price = PriceCalculator.calculate(v.getHotel(), v.getDuration(), orderDate, depDate);
+        VoucherPurchaseItem item = new VoucherPurchaseItem(v, price, depDate);
+        currentVouchers.add(item);
+        voucherList.getItems().add(item);
+        calculateTotal();
     }
 
     private void calculateTotal() {
@@ -78,24 +81,9 @@ public class PurchaseController {
             total = total.add(item.getPrice());
         }
         Discount d = discountCombo.getValue();
-        BigDecimal discountSize = (d != null) ? d.getSize().divide(new BigDecimal(100)) : BigDecimal.ZERO;
+        BigDecimal discountSize = (d != null && d.getId() != 0) ? d.getSize().divide(new BigDecimal(100)) : BigDecimal.ZERO;
         total = total.multiply(BigDecimal.ONE.subtract(discountSize));
         totalCostLabel.setText("Итого: " + total.setScale(2, BigDecimal.ROUND_HALF_UP));
-    }
-
-    @FXML private DatePicker orderDatePicker;
-
-    private BigDecimal calculateDynamicPrice(VoucherPurchaseItem item, Date orderDate) {
-        long diffInMillies = Math.abs(item.getDepartureDate().getTime() - orderDate.getTime());
-        long diffInDays = java.util.concurrent.TimeUnit.DAYS.convert(diffInMillies, java.util.concurrent.TimeUnit.MILLISECONDS);
-        
-        BigDecimal price = item.getPrice();
-        if (diffInDays < 30) {
-            long daysLess = 30 - diffInDays;
-            BigDecimal multiplier = new BigDecimal("1").add(new BigDecimal(daysLess).multiply(new BigDecimal("0.05")));
-            price = price.multiply(multiplier);
-        }
-        return price;
     }
 
     @FXML
@@ -103,17 +91,8 @@ public class PurchaseController {
         if (client == null) return;
         try {
             Date orderDate = Date.valueOf(orderDatePicker.getValue());
-            BigDecimal total = BigDecimal.ZERO;
-            
-            for (VoucherPurchaseItem item : currentVouchers) {
-                total = total.add(calculateDynamicPrice(item, orderDate));
-            }
-            
-            Discount d = discountCombo.getValue();
-            BigDecimal discountSize = (d != null && d.getId() != 0) ? d.getSize().divide(new BigDecimal(100)) : BigDecimal.ZERO;
-            total = total.multiply(BigDecimal.ONE.subtract(discountSize));
-            
-            Purchase p = new Purchase((int)(System.currentTimeMillis()%100000), orderDate, client, currentVouchers.size(), total.setScale(2, BigDecimal.ROUND_HALF_UP));
+            BigDecimal total = new BigDecimal(totalCostLabel.getText().replace("Итого: ", ""));
+            Purchase p = new Purchase((int)(System.currentTimeMillis()%100000), orderDate, client, currentVouchers.size(), total);
             purchaseDAO.createPurchase(p, currentVouchers, discountCombo.getValue());
             com.vdm.util.ViewUtils.loadView("/view/main-view.fxml", event);
         } catch (Exception e) { e.printStackTrace(); }
