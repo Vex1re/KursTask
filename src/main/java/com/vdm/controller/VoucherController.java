@@ -73,4 +73,9 @@ public class VoucherController {
             } catch (SQLException e) { e.printStackTrace(); }
         }
     }
+
+    @FXML
+    public void handleBack(javafx.event.ActionEvent event) throws Exception {
+        com.vdm.util.ViewUtils.loadView("/view/main-view.fxml", event);
+    }
 }

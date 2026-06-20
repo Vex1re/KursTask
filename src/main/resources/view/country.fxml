@@ -17,5 +17,6 @@
         <Button text="Добавить" onAction="#handleAdd" />
         <Button text="Изменить" onAction="#handleUpdate" />
         <Button text="Удалить" onAction="#handleDelete" />
+        <Button text="Назад" onAction="#handleBack" />
     </HBox>
 </VBox>
