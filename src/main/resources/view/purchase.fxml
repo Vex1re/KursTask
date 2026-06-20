@@ -2,15 +2,18 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<VBox xmlns:fx="http://javafx.com/fxml" fx:controller="com.vdm.controller.PurchaseController" spacing="10" alignment="CENTER" prefWidth="300" prefHeight="400">
+<VBox xmlns:fx="http://javafx.com/fxml" fx:controller="com.vdm.controller.PurchaseController" spacing="10" alignment="CENTER" prefWidth="400" prefHeight="500">
     <Label fx:id="clientLabel" />
-    <ComboBox fx:id="countryCombo" promptText="Select Country" onAction="#handleCountrySelect" />
-    <ComboBox fx:id="hotelCombo" promptText="Select Hotel" />
-    <ComboBox fx:id="durationCombo" promptText="Duration" />
-    <DatePicker fx:id="datePicker" promptText="Departure Date" />
-    <CheckBox fx:id="discountCheck" text="Discount (5%)" />
+    <ComboBox fx:id="countryCombo" promptText="Выберите страну" onAction="#handleCountrySelect" />
+    <ComboBox fx:id="hotelCombo" promptText="Выберите отель" />
+    <ComboBox fx:id="durationCombo" promptText="Длительность" />
+    <DatePicker fx:id="datePicker" promptText="Дата отправления" />
+    <ComboBox fx:id="discountCombo" promptText="Выберите скидку" />
+    <Button text="Добавить путевку" onAction="#handleAddVoucher" />
+    <ListView fx:id="voucherList" prefHeight="100" />
+    <Label fx:id="totalCostLabel" text="Итого: 0" />
     <HBox spacing="10" alignment="CENTER">
-        <Button text="Back" onAction="#handleBack" />
-        <Button text="Confirm Purchase" onAction="#handleCreatePurchase" />
+        <Button text="Назад" onAction="#handleBack" />
+        <Button text="Оформить покупку" onAction="#handleCreatePurchase" />
     </HBox>
 </VBox>

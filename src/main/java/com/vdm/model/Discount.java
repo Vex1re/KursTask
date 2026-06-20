@@ -19,4 +19,9 @@ public class Discount {
     public void setName(String name) { this.name = name; }
     public BigDecimal getSize() { return size; }
     public void setSize(BigDecimal size) { this.size = size; }
+
+    @Override
+    public String toString() {
+        return name + " (" + size + "%)";
+    }
 }
