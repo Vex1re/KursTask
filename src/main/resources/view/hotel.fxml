@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox xmlns:fx="http://javafx.com/fxml" fx:controller="com.vdm.controller.HotelController" spacing="10" padding="10">
+    <TableView fx:id="hotelTable" prefHeight="200">
+        <columns>
+            <TableColumn fx:id="nameColumn" text="Название" />
+            <TableColumn fx:id="classColumn" text="Класс" />
+            <TableColumn fx:id="countryColumn" text="Страна" />
+        </columns>
+    </TableView>
+    <TextField fx:id="nameField" promptText="Название отеля" />
+    <TextField fx:id="classField" promptText="Класс" />
+    <ComboBox fx:id="countryCombo" promptText="Выберите страну" />
+    <HBox spacing="10">
+        <Button text="Добавить" onAction="#handleAdd" />
+        <Button text="Изменить" onAction="#handleUpdate" />
+        <Button text="Удалить" onAction="#handleDelete" />
+    </HBox>
+</VBox>

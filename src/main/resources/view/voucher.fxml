@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox xmlns:fx="http://javafx.com/fxml" fx:controller="com.vdm.controller.VoucherController" spacing="10" padding="10">
+    <TableView fx:id="voucherTable" prefHeight="200">
+        <columns>
+            <TableColumn fx:id="hotelColumn" text="Отель" />
+            <TableColumn fx:id="durationColumn" text="Длительность" />
+        </columns>
+    </TableView>
+    <TextField fx:id="durationField" promptText="Длительность (1, 2, 4)" />
+    <ComboBox fx:id="hotelCombo" promptText="Выберите отель" />
+    <HBox spacing="10">
+        <Button text="Добавить" onAction="#handleAdd" />
+        <Button text="Изменить" onAction="#handleUpdate" />
+        <Button text="Удалить" onAction="#handleDelete" />
+    </HBox>
+</VBox>

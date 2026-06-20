@@ -8,6 +8,7 @@ import javafx.event.ActionEvent;
 public class MainController {
     @FXML private Button editCountriesButton;
     @FXML private Button editHotelsButton;
+    @FXML private Button editVouchersButton;
     @FXML private Button editClientsButton;
     @FXML private Button createPurchaseButton;
 
@@ -16,6 +17,7 @@ public class MainController {
         if (!UserSession.getInstance().isPrivileged()) {
             editCountriesButton.setDisable(true);
             editHotelsButton.setDisable(true);
+            editVouchersButton.setDisable(true);
         }
         if (!UserSession.getInstance().canManageClients()) {
             editClientsButton.setDisable(true);
@@ -36,6 +38,11 @@ public class MainController {
     @FXML
     public void handleManageHotels(ActionEvent event) throws Exception {
         com.vdm.util.ViewUtils.loadView("/view/hotel.fxml", event);
+    }
+
+    @FXML
+    public void handleManageVouchers(ActionEvent event) throws Exception {
+        com.vdm.util.ViewUtils.loadView("/view/voucher.fxml", event);
     }
 
     @FXML

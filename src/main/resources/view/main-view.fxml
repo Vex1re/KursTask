@@ -2,10 +2,11 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<VBox xmlns:fx="http://javafx.com/fxml" fx:controller="com.vdm.controller.MainController" spacing="10" alignment="CENTER" prefWidth="400" prefHeight="350">
+<VBox xmlns:fx="http://javafx.com/fxml" fx:controller="com.vdm.controller.MainController" spacing="10" alignment="CENTER" prefWidth="400" prefHeight="400">
     <Label text="Главное меню" />
     <Button fx:id="editCountriesButton" text="Управление странами" onAction="#handleManageCountries" />
     <Button fx:id="editHotelsButton" text="Управление отелями" onAction="#handleManageHotels" />
+    <Button fx:id="editVouchersButton" text="Управление путевками" onAction="#handleManageVouchers" />
     <Button fx:id="editClientsButton" text="Управление клиентами" onAction="#handleManageClients" />
     <Button fx:id="createPurchaseButton" text="Оформить покупку" onAction="#handleCreatePurchase" />
     <Button text="Выход" onAction="#handleLogout" />
