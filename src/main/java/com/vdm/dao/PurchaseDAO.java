@@ -21,6 +21,18 @@ public class PurchaseDAO {
         return purchases;
     }
 
+    public int getNextId() throws SQLException {
+        String query = "SELECT MAX(id_purchase) FROM Purchases";
+        try (Connection conn = DatabaseConnection.getInstance().getConnection();
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(query)) {
+            if (rs.next()) {
+                return rs.getInt(1) + 1;
+            }
+            return 1;
+        }
+    }
+
     public void createPurchase(Purchase purchase, List<VoucherPurchaseItem> vouchers, Discount discount) throws SQLException {
         Connection conn = DatabaseConnection.getInstance().getConnection();
         conn.setAutoCommit(false);

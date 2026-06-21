@@ -4,6 +4,7 @@ import com.vdm.dao.CountryDAO;
 import com.vdm.model.Country;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
+import com.vdm.model.UserSession;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 
@@ -15,11 +16,21 @@ public class CountryController {
     @FXML private TableColumn<Country, String> climateColumn;
     @FXML private TextField nameField;
     @FXML private TextField climateField;
+    @FXML private Button addCountryButton;
+    @FXML private Button editCountryButton;
+    @FXML private Button deleteCountryButton;
 
     private CountryDAO countryDAO = new CountryDAO();
 
     @FXML
     public void initialize() {
+        if (!UserSession.getInstance().isPrivileged()){
+            nameField.setDisable(true);
+            climateField.setDisable(true);
+            addCountryButton.setDisable(true);
+            editCountryButton.setDisable(true);
+            deleteCountryButton.setDisable(true);
+        }
         nameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
         climateColumn.setCellValueFactory(new PropertyValueFactory<>("climate"));
         refreshTable();

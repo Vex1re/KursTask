@@ -3,6 +3,7 @@ package com.vdm.controller;
 import com.vdm.dao.HotelDAO;
 import com.vdm.dao.VoucherDAO;
 import com.vdm.model.Hotel;
+import com.vdm.model.UserSession;
 import com.vdm.model.Voucher;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
@@ -17,12 +18,22 @@ public class VoucherController {
     @FXML private TableColumn<Voucher, Integer> durationColumn;
     @FXML private ComboBox<String> durationCombo;
     @FXML private ComboBox<Hotel> hotelCombo;
+    @FXML private Button addVoucherButton;
+    @FXML private Button editVoucherButton;
+    @FXML private Button deleteVoucherButton;
 
     private VoucherDAO voucherDAO = new VoucherDAO();
     private HotelDAO hotelDAO = new HotelDAO();
 
     @FXML
     public void initialize() {
+        if (!UserSession.getInstance().isPrivileged()){
+            durationCombo.setDisable(true);
+            hotelCombo.setDisable(true);
+            addVoucherButton.setDisable(true);
+            editVoucherButton.setDisable(true);
+            deleteVoucherButton.setDisable(true);
+        }
         hotelColumn.setCellValueFactory(cellData -> new javafx.beans.property.SimpleStringProperty(cellData.getValue().getHotel().getName()));
         durationColumn.setCellValueFactory(new PropertyValueFactory<>("duration"));
         

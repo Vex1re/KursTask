@@ -16,9 +16,9 @@
     <ComboBox fx:id="classCombo" promptText="Выберите класс" />
     <ComboBox fx:id="countryCombo" promptText="Выберите страну" />
     <HBox spacing="10">
-        <Button text="Добавить" onAction="#handleAdd" />
-        <Button text="Изменить" onAction="#handleUpdate" />
-        <Button text="Удалить" onAction="#handleDelete" />
+        <Button fx:id="addHotelButton" text="Добавить" onAction="#handleAdd" />
+        <Button fx:id="editHotelButton" text="Изменить" onAction="#handleUpdate" />
+        <Button fx:id="deleteHotelButton" text="Удалить" onAction="#handleDelete" />
         <Region HBox.hgrow="ALWAYS" />
         <Button text="Назад" onAction="#handleBack" />
     </HBox>

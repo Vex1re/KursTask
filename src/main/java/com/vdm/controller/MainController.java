@@ -15,9 +15,9 @@ public class MainController {
     @FXML
     public void initialize() {
         if (!UserSession.getInstance().isPrivileged()) {
-            editCountriesButton.setDisable(true);
-            editHotelsButton.setDisable(true);
-            editVouchersButton.setDisable(true);
+            editCountriesButton.setDisable(false);
+            editHotelsButton.setDisable(false);
+            editVouchersButton.setDisable(false);
             purchaseHistoryButton.setDisable(true);
         }
         if (!UserSession.getInstance().canManageClients()) {

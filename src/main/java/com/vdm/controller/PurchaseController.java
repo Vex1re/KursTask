@@ -92,7 +92,9 @@ public class PurchaseController {
         try {
             Date orderDate = Date.valueOf(orderDatePicker.getValue());
             BigDecimal total = new BigDecimal(totalCostLabel.getText().replace("Итого: ", ""));
-            Purchase p = new Purchase((int)(System.currentTimeMillis()%100000), orderDate, client, currentVouchers.size(), total);
+            
+            int newId = purchaseDAO.getNextId();
+            Purchase p = new Purchase(newId, orderDate, client, currentVouchers.size(), total);
             purchaseDAO.createPurchase(p, currentVouchers, discountCombo.getValue());
             com.vdm.util.ViewUtils.loadView("/view/main-view.fxml", event);
         } catch (Exception e) { e.printStackTrace(); }

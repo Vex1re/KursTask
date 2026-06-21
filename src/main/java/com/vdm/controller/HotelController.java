@@ -4,6 +4,7 @@ import com.vdm.dao.CountryDAO;
 import com.vdm.dao.HotelDAO;
 import com.vdm.model.Country;
 import com.vdm.model.Hotel;
+import com.vdm.model.UserSession;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -19,12 +20,25 @@ public class HotelController {
     @FXML private TextField nameField;
     @FXML private ComboBox<String> classCombo;
     @FXML private ComboBox<Country> countryCombo;
+    @FXML private Button addHotelButton;
+    @FXML private Button editHotelButton;
+    @FXML private Button deleteHotelButton;
+
 
     private HotelDAO hotelDAO = new HotelDAO();
     private CountryDAO countryDAO = new CountryDAO();
 
     @FXML
     public void initialize() {
+        if (!UserSession.getInstance().isPrivileged()){
+            nameField.setDisable(true);
+            classCombo.setDisable(true);
+            countryCombo.setDisable(true);
+            addHotelButton.setDisable(true);
+            editHotelButton.setDisable(true);
+            deleteHotelButton.setDisable(true);
+        }
+
         nameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
         classColumn.setCellValueFactory(new PropertyValueFactory<>("hotelClass"));
         countryColumn.setCellValueFactory(cellData -> new javafx.beans.property.SimpleStringProperty(cellData.getValue().getCountry().getName()));

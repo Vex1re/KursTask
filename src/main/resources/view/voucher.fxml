@@ -14,9 +14,9 @@
     <ComboBox fx:id="durationCombo" promptText="Выберите длительность" />
     <ComboBox fx:id="hotelCombo" promptText="Выберите отель" />
     <HBox spacing="10">
-        <Button text="Добавить" onAction="#handleAdd" />
-        <Button text="Изменить" onAction="#handleUpdate" />
-        <Button text="Удалить" onAction="#handleDelete" />
+        <Button fx:id="addVoucherButton" text="Добавить" onAction="#handleAdd" />
+        <Button fx:id="editVoucherButton" text="Изменить" onAction="#handleUpdate" />
+        <Button fx:id="deleteVoucherButton" text="Удалить" onAction="#handleDelete" />
         <Region HBox.hgrow="ALWAYS" />
         <Button text="Назад" onAction="#handleBack" />
     </HBox>
