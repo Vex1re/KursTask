@@ -48,13 +48,20 @@ public class PurchaseDAO {
             }
 
             String vQuery = "INSERT INTO Voucher_Purchase (id_tour, id_purchase, cost, departure_date) VALUES (?, ?, ?, ?)";
-            try (PreparedStatement vStmt = conn.prepareStatement(vQuery)) {
+            String hcQuery = "INSERT IGNORE INTO Hotel_Client (id_hotel, id_client) VALUES (?, ?)";
+            
+            try (PreparedStatement vStmt = conn.prepareStatement(vQuery);
+                 PreparedStatement hcStmt = conn.prepareStatement(hcQuery)) {
                 for (VoucherPurchaseItem item : vouchers) {
                     vStmt.setInt(1, item.getVoucher().getId());
                     vStmt.setInt(2, purchase.getId());
                     vStmt.setBigDecimal(3, item.getPrice());
                     vStmt.setDate(4, item.getDepartureDate());
                     vStmt.executeUpdate();
+
+                    hcStmt.setInt(1, item.getVoucher().getHotel().getId());
+                    hcStmt.setInt(2, purchase.getClient().getId());
+                    hcStmt.executeUpdate();
                 }
             }
             
