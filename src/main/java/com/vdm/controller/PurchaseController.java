@@ -138,7 +138,6 @@ public class PurchaseController {
             purchaseDAO.createPurchase(p, currentVouchers, selectedDiscount);
             
             clearFields();
-            com.vdm.util.ViewUtils.showAlert("Успешно", "Покупка оформлена.");
             com.vdm.util.ViewUtils.loadView("/view/main-view.fxml", event);
         } catch (Exception e) { e.printStackTrace(); }
     }
