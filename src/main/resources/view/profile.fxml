@@ -6,5 +6,6 @@
     <TextField fx:id="nameField" promptText="Full Name" />
     <TextField fx:id="loginField" promptText="Login" editable="false" />
     <PasswordField fx:id="passwordField" promptText="New Password" />
-    <Button text="Update Profile" onAction="#handleUpdate" />
+    <Button text="Обновить профиль" onAction="#handleUpdate" />
+    <Button text="Назад" onAction="#handleBack" />
 </VBox>

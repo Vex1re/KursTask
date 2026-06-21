@@ -58,7 +58,13 @@ public class ProfileController {
     private void showAlert(String title, String content) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle(title);
+        alert.setHeaderText(null);
         alert.setContentText(content);
         alert.showAndWait();
+    }
+
+    @FXML
+    public void handleBack(javafx.event.ActionEvent event) throws Exception {
+        com.vdm.util.ViewUtils.loadView("/view/main-view.fxml", event);
     }
 }
