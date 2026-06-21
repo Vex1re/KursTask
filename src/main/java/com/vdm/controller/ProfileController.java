@@ -3,7 +3,7 @@ package com.vdm.controller;
 import com.vdm.dao.UserDAO;
 import com.vdm.model.User;
 import com.vdm.model.UserSession;
-import com.vdm.util.PasswordValidator;
+import com.vdm.util.Validator;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.PasswordField;
@@ -43,7 +43,7 @@ public class ProfileController {
         }
 
         if (newPass != null && !newPass.isEmpty()) {
-            if (!PasswordValidator.isValid(newPass)) {
+            if (!Validator.isValidPassword(newPass)) {
                 showAlert("Ошибка", "Новый пароль не соответствует требованиям.");
                 return;
             }

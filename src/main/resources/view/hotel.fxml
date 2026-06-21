@@ -7,9 +7,9 @@
     <padding><Insets bottom="10" left="10" right="10" top="10"/></padding>
     <TableView fx:id="hotelTable" prefHeight="200">
         <columns>
-            <TableColumn fx:id="nameColumn" text="Название" />
-            <TableColumn fx:id="classColumn" text="Класс" />
-            <TableColumn fx:id="countryColumn" text="Страна" />
+            <TableColumn fx:id="nameColumn" text="Название" prefWidth="150"/>
+            <TableColumn fx:id="classColumn" text="Класс" prefWidth="150"/>
+            <TableColumn fx:id="countryColumn" text="Страна" prefWidth="150"/>
         </columns>
     </TableView>
     <TextField fx:id="nameField" promptText="Название отеля" />
@@ -19,6 +19,7 @@
         <Button text="Добавить" onAction="#handleAdd" />
         <Button text="Изменить" onAction="#handleUpdate" />
         <Button text="Удалить" onAction="#handleDelete" />
+        <Region HBox.hgrow="ALWAYS" />
         <Button text="Назад" onAction="#handleBack" />
     </HBox>
 </VBox>

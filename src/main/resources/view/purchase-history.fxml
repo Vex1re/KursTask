@@ -7,11 +7,12 @@
     <padding><Insets bottom="10" left="10" right="10" top="10"/></padding>
     <TableView fx:id="purchaseTable" prefHeight="400">
         <columns>
-            <TableColumn fx:id="idColumn" text="ID" />
-            <TableColumn fx:id="dateColumn" text="Дата" />
-            <TableColumn fx:id="costColumn" text="Стоимость" />
-            <TableColumn fx:id="clientColumn" text="Клиент" />
+            <TableColumn fx:id="idColumn" text="ID" prefWidth="50"/>
+            <TableColumn fx:id="dateColumn" text="Дата" prefWidth="75"/>
+            <TableColumn fx:id="costColumn" text="Стоимость" prefWidth="75"/>
+            <TableColumn fx:id="clientColumn" text="Клиент" prefWidth="150"/>
         </columns>
     </TableView>
+    <Region HBox.hgrow="ALWAYS" />
     <Button text="Назад" onAction="#handleBack" />
 </VBox>

@@ -20,6 +20,6 @@ public class Voucher {
 
     @Override
     public String toString() {
-        return "Тур #" + id + " (Отель: " + hotel.getName() + ")";
+        return "Тур #" + id + " (Отель: " + hotel.getName() + ". Длительность: " + duration + " нед.)";
     }
 }

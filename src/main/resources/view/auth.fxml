@@ -3,8 +3,8 @@
 <?import javafx.scene.layout.*?>
 
 <VBox xmlns:fx="http://javafx.com/fxml" fx:controller="com.vdm.controller.AuthController" spacing="10" alignment="CENTER" prefWidth="300" prefHeight="200">
-    <TextField fx:id="loginField" promptText="Login" />
-    <PasswordField fx:id="passwordField" promptText="Password" />
-    <Button text="Login" onAction="#handleLogin" />
-    <Button text="Go to Register" onAction="#showRegisterView" />
+    <TextField fx:id="loginField" promptText="Логин" />
+    <PasswordField fx:id="passwordField" promptText="Пароль" />
+    <Button text="Войти" onAction="#handleLogin" />
+    <Button text="Регистрация" onAction="#showRegisterView" />
 </VBox>

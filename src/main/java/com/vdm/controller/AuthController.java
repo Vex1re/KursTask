@@ -5,7 +5,7 @@ import com.vdm.model.Role;
 import com.vdm.dao.UserDAO;
 import com.vdm.model.User;
 import com.vdm.model.UserSession;
-import com.vdm.util.PasswordValidator;
+import com.vdm.util.Validator;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Alert;
@@ -44,15 +44,15 @@ public class AuthController {
         String login = loginField.getText();
         String password = passwordField.getText();
         String name = nameField.getText();
-        int roleId = 0; 
+        int roleId = 0;
 
         if (name.isEmpty() || login.isEmpty()) {
-            showAlert("Error", "Name and Login are required.");
+            showAlert("Ошибка", "Требуется логин и пароль");
             return;
         }
 
-        if (!PasswordValidator.isValid(password)) {
-            showAlert("Error", "Password does not meet requirements.");
+        if (!Validator.isValidPassword(password)) {
+            showAlert("Ошибка", "Пароль не соответсвует требованиям");
             return;
         }
 
@@ -68,13 +68,13 @@ public class AuthController {
             showAlert("Ошибка базы данных", "Регистрация не удалась: " + e.getMessage());
         }
     }
-@FXML
-public void handleLogin(javafx.event.ActionEvent event) {
-    String login = loginField.getText();
-    String password = passwordField.getText();
+    @FXML
+    public void handleLogin(javafx.event.ActionEvent event) {
+        String login = loginField.getText();
+        String password = passwordField.getText();
 
     if (login == null || login.isEmpty() || password == null || password.isEmpty()) {
-        showAlert("Error", "Login and password are required.");
+        showAlert("Ошибка", "Требуется логин и пароль");
         return;
     }
 
@@ -84,12 +84,12 @@ public void handleLogin(javafx.event.ActionEvent event) {
             UserSession.getInstance().setUser(user);
             loadView("/view/main-view.fxml", event);
         } else {
-            showAlert("Error", "Invalid credentials");
+            showAlert("Ошибка", "Неверные данные");
         }
     } catch (SQLException e) {
-        showAlert("Database Error", "Unable to connect to the database: " + e.getMessage());
+        showAlert("Ошибка базы данных", "Невозможно подключиться к базе данных: " + e.getMessage());
     } catch (Exception e) {
-        showAlert("Error", "An unexpected error occurred: " + e.getMessage());
+        showAlert("Ошибка", "Произошла неизвестная ошибка: " + e.getMessage());
     }
 }
 

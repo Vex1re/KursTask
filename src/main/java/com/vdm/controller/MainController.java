@@ -10,7 +10,6 @@ public class MainController {
     @FXML private Button editHotelsButton;
     @FXML private Button editVouchersButton;
     @FXML private Button editClientsButton;
-    @FXML private Button createPurchaseButton;
     @FXML private Button purchaseHistoryButton;
 
     @FXML
@@ -25,9 +24,8 @@ public class MainController {
             editClientsButton.setDisable(true);
         }
     }
-@FXML
-public void handlePurchaseHistory(ActionEvent event) throws Exception {
-
+    @FXML
+    public void handlePurchaseHistory(ActionEvent event) throws Exception {
         com.vdm.util.ViewUtils.loadView("/view/purchase-history.fxml", event);
     }
 
@@ -61,10 +59,5 @@ public void handlePurchaseHistory(ActionEvent event) throws Exception {
     @FXML
     public void handleManageClients(ActionEvent event) throws Exception {
         com.vdm.util.ViewUtils.loadView("/view/client.fxml", event);
-    }
-    
-    @FXML
-    public void handleCreatePurchase(ActionEvent event) throws Exception {
-        com.vdm.util.ViewUtils.loadView("/view/purchase.fxml", event);
     }
 }

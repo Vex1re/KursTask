@@ -12,6 +12,9 @@
             <TableColumn fx:id="addressColumn" text="Адрес" prefWidth="200" />
         </columns>
     </TableView>
+    <TextField fx:id="nameField" promptText="ФИО клиента" />
+    <TextField fx:id="numField" promptText="+7(111)111-11-11" />
+    <TextField fx:id="adressField" promptText="Адрес клиента" />
     <HBox spacing="10">
         <Button text="Добавить" onAction="#handleAdd" />
         <Button text="Изменить" onAction="#handleEdit" />

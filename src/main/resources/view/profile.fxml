@@ -8,5 +8,6 @@
     <PasswordField fx:id="oldPasswordField" promptText="Старый пароль" />
     <PasswordField fx:id="newPasswordField" promptText="Новый пароль" />
     <Button text="Обновить профиль" onAction="#handleUpdate" />
+    <Region HBox.hgrow="ALWAYS" />
     <Button text="Назад" onAction="#handleBack" />
 </VBox>
