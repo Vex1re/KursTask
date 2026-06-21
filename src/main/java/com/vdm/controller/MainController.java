@@ -27,12 +27,19 @@ public class MainController {
     }
 
     @FXML
+    @FXML
     public void handlePurchaseHistory(ActionEvent event) throws Exception {
         com.vdm.util.ViewUtils.loadView("/view/purchase-history.fxml", event);
     }
 
     @FXML
+    public void handleProfile(ActionEvent event) throws Exception {
+        com.vdm.util.ViewUtils.loadView("/view/profile.fxml", event);
+    }
+
+    @FXML
     public void handleLogout(ActionEvent event) throws Exception {
+
         UserSession.getInstance().clearSession();
         com.vdm.util.ViewUtils.loadView("/view/auth.fxml", event);
     }

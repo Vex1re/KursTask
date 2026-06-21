@@ -1,20 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
 
-<VBox xmlns:fx="http://javafx.com/fxml" fx:controller="com.vdm.controller.ClientController" spacing="10" alignment="CENTER" prefWidth="500" prefHeight="400">
+<VBox xmlns:fx="http://javafx.com/fxml" fx:controller="com.vdm.controller.ClientController" spacing="10">
+    <padding><Insets bottom="10" left="10" right="10" top="10"/></padding>
     <TableView fx:id="clientTable" VBox.vgrow="ALWAYS">
         <columns>
-            <TableColumn fx:id="nameColumn" text="Name" prefWidth="150" />
-            <TableColumn fx:id="phoneColumn" text="Phone" prefWidth="150" />
-            <TableColumn fx:id="addressColumn" text="Address" prefWidth="200" />
+            <TableColumn fx:id="nameColumn" text="ФИО" prefWidth="150" />
+            <TableColumn fx:id="phoneColumn" text="Телефон" prefWidth="150" />
+            <TableColumn fx:id="addressColumn" text="Адрес" prefWidth="200" />
         </columns>
     </TableView>
-    <HBox spacing="10" alignment="CENTER" style="-fx-padding: 10;">
-        <Button text="Back" onAction="#handleBack" />
-        <Button text="Add Client" onAction="#handleAdd" />
-        <Button text="Edit Client" onAction="#handleEdit" />
-        <Button text="Delete Client" onAction="#handleDelete" />
-        <Button text="Create Purchase" onAction="#handleCreatePurchase" />
+    <HBox spacing="10">
+        <Button text="Добавить" onAction="#handleAdd" />
+        <Button text="Изменить" onAction="#handleEdit" />
+        <Button text="Удалить" onAction="#handleDelete" />
+        <Button text="Создать покупку" onAction="#handleCreatePurchase" />
+        <Region HBox.hgrow="ALWAYS" />
+        <Button text="Назад" onAction="#handleBack" />
     </HBox>
 </VBox>
