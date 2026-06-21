@@ -25,10 +25,9 @@ public class MainController {
             editClientsButton.setDisable(true);
         }
     }
+@FXML
+public void handlePurchaseHistory(ActionEvent event) throws Exception {
 
-    @FXML
-    @FXML
-    public void handlePurchaseHistory(ActionEvent event) throws Exception {
         com.vdm.util.ViewUtils.loadView("/view/purchase-history.fxml", event);
     }
 

@@ -16,7 +16,8 @@ import java.sql.SQLException;
 public class ProfileController {
     @FXML private TextField nameField;
     @FXML private TextField loginField;
-    @FXML private PasswordField passwordField;
+    @FXML private PasswordField oldPasswordField;
+    @FXML private PasswordField newPasswordField;
 
     private UserDAO userDAO = new UserDAO();
 
@@ -32,26 +33,34 @@ public class ProfileController {
     @FXML
     public void handleUpdate() {
         User user = UserSession.getInstance().getUser();
+        String oldPass = oldPasswordField.getText();
+        String newPass = newPasswordField.getText();
         String newName = nameField.getText();
-        String newPassword = passwordField.getText();
 
-        if (!PasswordValidator.isValid(newPassword)) {
-            showAlert("Error", "Password does not meet requirements.");
+        if (!user.getPassword().equals(oldPass)) {
+            showAlert("Ошибка", "Старый пароль введен неверно.");
             return;
+        }
+
+        if (newPass != null && !newPass.isEmpty()) {
+            if (!PasswordValidator.isValid(newPass)) {
+                showAlert("Ошибка", "Новый пароль не соответствует требованиям.");
+                return;
+            }
+            user.setPassword(newPass);
         }
 
         try (Connection conn = DatabaseConnection.getInstance().getConnection();
              PreparedStatement stmt = conn.prepareStatement("UPDATE Users SET name = ?, password = ? WHERE id_user = ?")) {
             stmt.setString(1, newName);
-            stmt.setString(2, newPassword);
+            stmt.setString(2, user.getPassword());
             stmt.setInt(3, user.getId());
             stmt.executeUpdate();
             
             user.setName(newName);
-            user.setPassword(newPassword);
-            showAlert("Success", "Profile updated successfully.");
+            showAlert("Успешно", "Профиль обновлен.");
         } catch (SQLException e) {
-            showAlert("Error", "Database error during update.");
+            showAlert("Ошибка", "Ошибка БД при обновлении.");
         }
     }
 
