@@ -21,7 +21,7 @@ public class PurchaseController {
     @FXML private TextArea voucherInfoArea;
     @FXML private DatePicker departureDatePicker;
     @FXML private DatePicker orderDatePicker;
-    @FXML private ComboBox<Discount> discountCombo;
+    @FXML private ListView<Discount> discountList;
     @FXML private ListView<VoucherPurchaseItem> voucherList;
     @FXML private Label totalCostLabel;
 
@@ -40,12 +40,14 @@ public class PurchaseController {
     public void initialize() {
         try {
             voucherPoolCombo.setItems(FXCollections.observableArrayList(voucherDAO.getAll()));
+            
+            discountList.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
             List<Discount> discounts = new ArrayList<>();
             discounts.add(new Discount(0, "Без скидки", BigDecimal.ZERO));
             discounts.addAll(discountDAO.getAll());
-            discountCombo.setItems(FXCollections.observableArrayList(discounts));
-            discountCombo.getSelectionModel().selectFirst();
-            discountCombo.setOnAction(e -> calculateTotal());
+            discountList.setItems(FXCollections.observableArrayList(discounts));
+            discountList.getSelectionModel().select(0);
+            discountList.getSelectionModel().selectedItemProperty().addListener((obs, old, newVal) -> calculateTotal());
         } catch (SQLException e) { e.printStackTrace(); }
     }
 
@@ -84,7 +86,25 @@ public class PurchaseController {
             currentVouchers.add(item);
             voucherList.getItems().add(item);
             calculateTotal();
-        } catch (Exception e) {  }
+        } catch (Exception e) { }
+    }
+
+    private void calculateTotal() {
+        BigDecimal total = BigDecimal.ZERO;
+        for (VoucherPurchaseItem item : currentVouchers) {
+            total = total.add(item.getPrice());
+        }
+        
+        BigDecimal discountSum = BigDecimal.ZERO;
+        for (Discount d : discountList.getSelectionModel().getSelectedItems()) {
+            if (d.getId() != 0) {
+                discountSum = discountSum.add(d.getSize());
+            }
+        }
+        
+        BigDecimal discountMultiplier = discountSum.divide(new BigDecimal(100));
+        total = total.multiply(BigDecimal.ONE.subtract(discountMultiplier));
+        totalCostLabel.setText("Итого: " + total.setScale(2, BigDecimal.ROUND_HALF_UP));
     }
 
     private void clearFields() {
@@ -93,7 +113,8 @@ public class PurchaseController {
         totalCostLabel.setText("Итого: 0");
         departureDatePicker.setValue(null);
         orderDatePicker.setValue(null);
-        discountCombo.getSelectionModel().selectFirst();
+        discountList.getSelectionModel().clearSelection();
+        discountList.getSelectionModel().select(0);
     }
 
     @FXML
@@ -105,7 +126,16 @@ public class PurchaseController {
             
             int newId = purchaseDAO.getNextId();
             Purchase p = new Purchase(newId, orderDate, client, currentVouchers.size(), total);
-            purchaseDAO.createPurchase(p, currentVouchers, discountCombo.getValue());
+
+            Discount selectedDiscount = null;
+            for (Discount d : discountList.getSelectionModel().getSelectedItems()) {
+                if (d.getId() != 0) {
+                    selectedDiscount = d;
+                    break; 
+                }
+            }
+            
+            purchaseDAO.createPurchase(p, currentVouchers, selectedDiscount);
             
             clearFields();
             com.vdm.util.ViewUtils.showAlert("Успешно", "Покупка оформлена.");
