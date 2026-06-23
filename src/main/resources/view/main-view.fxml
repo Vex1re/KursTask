@@ -15,6 +15,7 @@
             <Button fx:id="editHotelsButton" text="Управление отелями" onAction="#handleManageHotels" />
             <Button fx:id="editVouchersButton" text="Управление путевками" onAction="#handleManageVouchers" />
             <Button fx:id="editClientsButton" text="Управление клиентами" onAction="#handleManageClients" />
+            <Button fx:id="editDiscountsButton" text="Управление скидками" onAction="#handleManageDiscounts" />
             <Button fx:id="purchaseHistoryButton" text="История покупок" onAction="#handlePurchaseHistory" />
             <Button text="Выход" onAction="#handleLogout" />
         </VBox>

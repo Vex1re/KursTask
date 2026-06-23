@@ -11,6 +11,7 @@ public class MainController {
     @FXML private Button editVouchersButton;
     @FXML private Button editClientsButton;
     @FXML private Button purchaseHistoryButton;
+    @FXML private Button editDiscountsButton;
 
     @FXML
     public void initialize() {
@@ -19,6 +20,7 @@ public class MainController {
             editHotelsButton.setDisable(false);
             editVouchersButton.setDisable(false);
             purchaseHistoryButton.setDisable(true);
+            editDiscountsButton.setDisable(false);
         }
         if (!UserSession.getInstance().canManageClients()) {
             editClientsButton.setDisable(true);
@@ -59,5 +61,10 @@ public class MainController {
     @FXML
     public void handleManageClients(ActionEvent event) throws Exception {
         com.vdm.util.ViewUtils.loadView("/view/client.fxml", event);
+    }
+
+    @FXML
+    public void handleManageDiscounts(ActionEvent event) throws Exception {
+        com.vdm.util.ViewUtils.loadView("/view/discounts.fxml", event);
     }
 }

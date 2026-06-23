@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<VBox xmlns:fx="http://javafx.com/fxml" fx:controller="com.vdm.controller.DiscountController" spacing="10">
+    <padding><Insets bottom="10" left="10" right="10" top="10"/></padding>
+    <TableView fx:id="discountTable" prefHeight="200">
+        <columns>
+            <TableColumn fx:id="nameColumn" text="Название" prefWidth="150"/>
+            <TableColumn fx:id="sizeColumn" text="Размер" prefWidth="150"/>
+        </columns>
+    </TableView>
+    <TextField fx:id="nameField" promptText="Название скидки" />
+    <TextField fx:id="sizeField" promptText="Размер скидки (0 &lt; discount &lt; 100)" />
+    <HBox spacing="10">
+        <Button fx:id="addDiscountButton" text="Добавить" onAction="#handleAdd" />
+        <Button fx:id="editDiscountButton" text="Изменить" onAction="#handleUpdate" />
+        <Button fx:id="deleteDiscountButton" text="Удалить" onAction="#handleDelete" />
+        <Region HBox.hgrow="ALWAYS" />
+        <Button text="Назад" onAction="#handleBack" />
+    </HBox>
+</VBox>
