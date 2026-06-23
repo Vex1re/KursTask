@@ -59,7 +59,7 @@ public class ClientController {
                 showAlert("Ошибка", "Неверные ФИО");
                 return;
             }
-            clientDAO.add(new Client((int)(System.currentTimeMillis()%10000), nameField.getText(), numField.getText(), adressField.getText()));
+            clientDAO.add(new Client(nameField.getText(), numField.getText(), adressField.getText()));
             refreshTable();
         } catch (SQLException e) { e.printStackTrace(); }
     }

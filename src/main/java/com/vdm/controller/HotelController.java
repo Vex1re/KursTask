@@ -63,7 +63,7 @@ public class HotelController {
         String hotelClass = classCombo.getValue();
         if (selectedCountry == null || hotelClass == null) return;
         try {
-            hotelDAO.add(new Hotel((int)(System.currentTimeMillis()%10000), nameField.getText(), hotelClass, selectedCountry));
+            hotelDAO.add(new Hotel(nameField.getText(), hotelClass, selectedCountry));
             refreshTable();
         } catch (SQLException e) { e.printStackTrace(); }
     }

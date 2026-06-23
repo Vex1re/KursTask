@@ -63,7 +63,7 @@ public class VoucherController {
         int weeks = getWeeksFromCombo();
         if (selectedHotel == null || weeks == 0) return;
         try {
-            voucherDAO.add(new Voucher((int)(System.currentTimeMillis()%10000), weeks, selectedHotel));
+            voucherDAO.add(new Voucher(weeks, selectedHotel));
             refreshTable();
         } catch (SQLException e) { e.printStackTrace(); }
     }

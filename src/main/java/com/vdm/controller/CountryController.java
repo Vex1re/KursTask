@@ -47,7 +47,7 @@ public class CountryController {
     @FXML
     public void handleAdd() {
         try {
-            countryDAO.add(new Country((int)(System.currentTimeMillis()%10000), nameField.getText(), climateField.getText()));
+            countryDAO.add(new Country(nameField.getText(), climateField.getText()));
             refreshTable();
         } catch (SQLException e) { e.printStackTrace(); }
     }

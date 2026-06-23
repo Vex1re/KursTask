@@ -11,6 +11,11 @@ public class Country {
         this.climate = climate;
     }
 
+    public Country(String name, String climate) {
+        this.name = name;
+        this.climate = climate;
+    }
+
     public int getId() { return id; }
     public void setId(int id) { this.id = id; }
     public String getName() { return name; }

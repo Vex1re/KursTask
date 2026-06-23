@@ -23,13 +23,12 @@ public class HotelDAO {
     }
 
     public void add(Hotel hotel) throws SQLException {
-        String query = "INSERT INTO Hotels (id_hotel, name, class, id_country) VALUES (?, ?, ?, ?)";
+        String query = "INSERT INTO Hotels (name, class, id_country) VALUES (?, ?, ?)";
         try (Connection conn = DatabaseConnection.getInstance().getConnection();
              PreparedStatement stmt = conn.prepareStatement(query)) {
-            stmt.setInt(1, hotel.getId());
-            stmt.setString(2, hotel.getName());
-            stmt.setString(3, hotel.getHotelClass());
-            stmt.setInt(4, hotel.getCountry().getId());
+            stmt.setString(1, hotel.getName());
+            stmt.setString(2, hotel.getHotelClass());
+            stmt.setInt(3, hotel.getCountry().getId());
             stmt.executeUpdate();
         }
     }

@@ -13,6 +13,12 @@ public class Hotel {
         this.country = country;
     }
 
+    public Hotel(String name, String hotelClass, Country country) {
+        this.name = name;
+        this.hotelClass = hotelClass;
+        this.country = country;
+    }
+
     public int getId() { return id; }
     public void setId(int id) { this.id = id; }
     public String getName() { return name; }

@@ -28,12 +28,11 @@ public class VoucherDAO {
     }
 
     public void add(Voucher voucher) throws SQLException {
-        String query = "INSERT INTO Vouchers (id_tour, duration, id_hotel) VALUES (?, ?, ?)";
+        String query = "INSERT INTO Vouchers (duration, id_hotel) VALUES (?, ?)";
         try (Connection conn = DatabaseConnection.getInstance().getConnection();
              PreparedStatement stmt = conn.prepareStatement(query)) {
-            stmt.setInt(1, voucher.getId());
-            stmt.setInt(2, voucher.getDuration());
-            stmt.setInt(3, voucher.getHotel().getId());
+            stmt.setInt(1, voucher.getDuration());
+            stmt.setInt(2, voucher.getHotel().getId());
             stmt.executeUpdate();
         }
     }

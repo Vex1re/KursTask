@@ -20,12 +20,11 @@ public class CountryDAO {
     }
 
     public void add(Country country) throws SQLException {
-        String query = "INSERT INTO Countries (id_country, name, climate) VALUES (?, ?, ?)";
+        String query = "INSERT INTO Countries (name, climate) VALUES (?, ?)";
         try (Connection conn = DatabaseConnection.getInstance().getConnection();
              PreparedStatement stmt = conn.prepareStatement(query)) {
-            stmt.setInt(1, country.getId());
-            stmt.setString(2, country.getName());
-            stmt.setString(3, country.getClimate());
+            stmt.setString(1, country.getName());
+            stmt.setString(2, country.getClimate());
             stmt.executeUpdate();
         }
     }

@@ -20,13 +20,12 @@ public class ClientDAO {
     }
 
     public void add(Client client) throws SQLException {
-        String query = "INSERT INTO Clients (id_client, name, phone_number, address) VALUES (?, ?, ?, ?)";
+        String query = "INSERT INTO Clients (name, phone_number, address) VALUES (?, ?, ?)";
         try (Connection conn = DatabaseConnection.getInstance().getConnection();
              PreparedStatement stmt = conn.prepareStatement(query)) {
-            stmt.setInt(1, client.getId());
-            stmt.setString(2, client.getName());
-            stmt.setString(3, client.getPhoneNumber());
-            stmt.setString(4, client.getAddress());
+            stmt.setString(1, client.getName());
+            stmt.setString(2, client.getPhoneNumber());
+            stmt.setString(3, client.getAddress());
             stmt.executeUpdate();
         }
     }

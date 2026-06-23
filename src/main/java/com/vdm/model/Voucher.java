@@ -11,6 +11,11 @@ public class Voucher {
         this.hotel = hotel;
     }
 
+    public Voucher(int duration, Hotel hotel) {
+        this.duration = duration;
+        this.hotel = hotel;
+    }
+
     public int getId() { return id; }
     public void setId(int id) { this.id = id; }
     public int getDuration() { return duration; }
