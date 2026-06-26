@@ -61,7 +61,9 @@ public class ClientController {
             }
             clientDAO.add(new Client(nameField.getText(), numField.getText(), adressField.getText()));
             refreshTable();
-        } catch (SQLException e) { e.printStackTrace(); }
+        } catch (SQLException e) {
+            showAlert("Ошибка", "Номер телефона уже существует");
+        }
     }
 
     @FXML public void handleEdit() {

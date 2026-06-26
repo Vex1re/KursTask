@@ -58,7 +58,7 @@ public class AuthController {
 
         try {
             Role managerRole = new RoleDAO().getByRoleName("Менеджер");
-            User newUser = new User((int)(System.currentTimeMillis() % 100000), name, login, password, managerRole);
+            User newUser = new User(name, login, password, managerRole);
             if (userDAO.registerUser(newUser)) {
                 showAlert("Успех", "Регистрация прошла успешно.");
             } else {
